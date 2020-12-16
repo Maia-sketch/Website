@@ -16,10 +16,9 @@
 	   </div>
 	   <div style ="float:right">
 	   <a href="index.html">Home</a>|<a href="3d models.html">3d models</a>| <a href="Game Ideas.html">Game Ideas</a>| <a href="CV.html">CV</a>      
-
-	 
      
 	   </div>
+	   
 	 </div>
 	 </div>   	  	
 	<br><p "font-size: 10"> Some of my ideas are mainly based on current events fom my childhood as well as ideas I have bounced off other people</p></br>
@@ -33,6 +32,106 @@
 	 </div>
 	  <p "font-size: 10"> This is really cute and thought to share </p>
 	  <canvas id="canvas" style="background: gray"></canvas>
+<script>
+	  var x = 10;
+var y = 10;
+var playerImage;
+var keys = [];
+var frame = 0;
+var dir = 0;
+
+function load()
+{
+  playerImage = new Image();
+  playerImage.src = "Ferret.png";
+}
+
+function draw(ctx)
+{
+  ctx.fillStyle = 'gray';
+  ctx.fillRect(1, 1, ctx.canvas.width, ctx.canvas.height);
+
+  var clip = {};
+  clip.x = 0;
+  clip.y = 0;
+  clip.w = playerImage.width / 2;
+  clip.h = playerImage.height / 1;
+
+  var clamp = parseInt(frame) % 10;
+  clip.x += clip.w * clamp;
+  clip.y += clip.h * dir;
+
+  ctx.drawImage(playerImage, clip.x, clip.y, clip.w, clip.h,
+    x, y, clip.w, clip.h);
+}
+
+function tick(ctx)
+{
+  var moving = false;
+
+  if(keys["ArrowLeft"])
+  {
+    x--;
+    dir = 1;
+    moving = true;
+  }
+  else if(keys["ArrowRight"])
+  {
+    x++;
+    dir = 0;
+    moving = true;
+  }
+
+  if(keys["ArrowUp"])
+  {
+    y--;
+    dir = 2;
+    moving = true;
+  }
+  else if(keys["ArrowDown"])
+  {
+    y++;
+    dir = 3;
+    moving = true;
+  }
+
+  frame += 0.1;
+
+  if(!moving)
+  {
+    frame = 0;
+  }
+
+  draw(ctx);
+  window.requestAnimationFrame(function(){tick(ctx);});
+}
+
+function main()
+{
+
+  canvas.width = 1000;
+  canvas.height = 640;
+  var ctx = canvas.getContext('2d');
+
+  load();
+
+  tick(ctx);
+}
+
+function keydown(event)
+{
+  keys[event.key] = true;
+}
+
+function keyup(event)
+{
+  keys[event.key] = false;
+}
+
+window.onload = main;
+window.addEventListener("keydown", keydown);
+window.addEventListener("keyup", keyup);
+</script>
 	 </body>
    <footer>
    <div style="background: rgb(204,255,229); height: 3rem">
